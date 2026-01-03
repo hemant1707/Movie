@@ -5,7 +5,7 @@ const initialState = {
     genres: [],
     directors: [],
     selectedGenres: [],
-    selectedDirectors:[]
+    selectedDirectors: []
 };
 
 const movieslice = createSlice({
@@ -29,8 +29,14 @@ const movieslice = createSlice({
         },
         selectedDirectors: (state, action) => {
             state.selectedDirectors = action.payload;
+        },
+        toggleFav: (state, action) => {
+            const record = state.movies.find((rec) => rec.title === action.payload);
+            if (record) {
+                record.isfav = !record.isfav;
+            }
         }
     }
 });
-export const { setMovies, setSearch, setGenres, setDirectors, selectedGenres, selectedDirectors } = movieslice.actions;
+export const { setMovies, setSearch, setGenres, setDirectors, selectedGenres, selectedDirectors, toggleFav } = movieslice.actions;
 export default movieslice.reducer;
