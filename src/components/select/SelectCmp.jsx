@@ -26,6 +26,11 @@ export default function SelectCmp(props) {
         const {
             target: { value }
         } = event;
+        if (value?.includes("Clear")) {
+            setPersonName([]);
+            props.onChange([]);
+            return;
+        }
         setPersonName(
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value
@@ -36,14 +41,37 @@ export default function SelectCmp(props) {
     return (
         <div>
             <FormControl sx={{ m: 1, width: 300 }}>
-                <InputLabel id="demo-multiple-checkbox-label">{props.title}</InputLabel>
-                <Select labelId="demo-multiple-checkbox-label" id="demo-multiple-checkbox" multiple value={personName} onChange={handleChange} input={<OutlinedInput label="Tag" />} renderValue={(selected) => selected.join(', ')} MenuProps={MenuProps}>
-                    {names?.length>0 &&  names.map((name) => (
-                        <MenuItem key={name} value={name}>
-                            <Checkbox checked={personName.includes(name)} />
-                            <ListItemText primary={name} />
+                <InputLabel id="demo-multiple-checkbox-label" sx={{ color: 'white', '&.Mui-focused': { color: 'white' } }}>
+                    {props.title}
+                </InputLabel>
+                <Select
+                    labelId="demo-multiple-checkbox-label"
+                    id="demo-multiple-checkbox"
+                    multiple
+                    value={personName}
+                    onChange={handleChange}
+                    input={<OutlinedInput label="Tag" sx={{ '& .MuiOutlinedInput-notchedOutline': { borderColor: 'white' }, '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'white' }, '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'white' } }} />}
+                    renderValue={(selected) => selected.join(', ')}
+                    MenuProps={MenuProps}
+                    sx={{
+                        color: 'white',
+                        '.MuiSvgIcon-root': {
+                            color: 'white'
+                        }
+                    }}
+                >
+                    {names?.length > 0 &&
+                        <MenuItem key={"clear"} value={"Clear"}>
+                            <ListItemText primary={"Clear"} />
                         </MenuItem>
-                    ))}
+                    }
+                    {names?.length > 0 &&
+                        names.map((name) => (
+                            <MenuItem key={name} value={name}>
+                                <Checkbox checked={personName.includes(name)} />
+                                <ListItemText primary={name} />
+                            </MenuItem>
+                        ))}
                 </Select>
             </FormControl>
         </div>

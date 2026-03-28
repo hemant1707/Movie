@@ -12,7 +12,7 @@ import { toggleFav } from '../slice/MovieSlice';
 export default function MovieCard(params) {
     const dispatch = useDispatch();
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ width: '100%', pt: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
             <Typography>{params.movie.title}</Typography>
             <Typography>{params.movie.director}</Typography>
             <Typography>Genres: {params.movie.genres.join(', ')}</Typography>
