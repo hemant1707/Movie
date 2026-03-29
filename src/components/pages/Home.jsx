@@ -7,13 +7,13 @@ import Movie from './Movie';
 
 export default function Home() {
   const dispatch = useDispatch();
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getMovies());
-  },[]);
+  }, [dispatch]);
   return (
     <>
-    <NavBar />
-   <Movie />
+      <NavBar />
+      <Movie />
     </>
   )
 }
