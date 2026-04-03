@@ -11,6 +11,11 @@ import { setSearch } from '../slice/MovieSlice';
 import { debounce } from '@mui/material/utils';
 import SelectCmp from '../select/SelectCmp';
 import { selectedGenres, selectedDirectors } from '../slice/MovieSlice';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ViewListIcon from '@mui/icons-material/ViewList';
+
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -51,44 +56,79 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     }
 }));
 
-export default function NavBar() {
+export default function NavBar({ view, setView }) {
     const { genres, directors } = useSelector((state) => state.movie);
     const dispath = useDispatch();
+
+    const handleViewChange = (event, newView) => {
+        if (newView !== null) {
+            setView(newView);
+        }
+    };
 
     const onSearchChange = debounce((e) => {
         console.log(e.target.value);
         dispath(setSearch(e.target.value));
     }, 500);
     const onDirectorChange = debounce((value) => {
-        console.log('director selected', value);
         dispath(selectedDirectors(value));
     }, 500);
     const onGenresChange = debounce((value) => {
-        console.log('genres selected', value);
         dispath(selectedGenres(value));
     }, 500);
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar position="fixed">
                 <Toolbar>
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        Movie
+                        MoviesApp
                     </Typography>
-                    <Search onChange={onSearchChange}>
+                    <Search>
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>
-                        <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+                        <StyledInputBase 
+                            placeholder="Search…" 
+                            inputProps={{ 'aria-label': 'search' }} 
+                            onChange={onSearchChange}
+                        />
                     </Search>
+
                     <Box sx={{ flexGrow: 1 }} />
-                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <SelectCmp title="Geners" list={genres} onChange={onGenresChange} />
-                        <SelectCmp title="Directors" list={directors} onChange={onDirectorChange} />
+
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <ToggleButtonGroup
+                            value={view}
+                            exclusive
+                            onChange={handleViewChange}
+                            aria-label="view toggle"
+                            size="small"
+                            sx={{ 
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                '& .MuiToggleButton-root': {
+                                    color: 'white',
+                                    '&.Mui-selected': {
+                                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                        color: 'white'
+                                    }
+                                }
+                            }}
+                        >
+                            <ToggleButton value="gallery" title="Gallery View">
+                                <ViewModuleIcon />
+                            </ToggleButton>
+                            <ToggleButton value="grid" title="Grid View">
+                                <ViewListIcon />
+                            </ToggleButton>
+                        </ToggleButtonGroup>
+
+                        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+                            <SelectCmp title="Genres" list={genres} onChange={onGenresChange} />
+                            <SelectCmp title="Directors" list={directors} onChange={onDirectorChange} />
+                        </Box>
                     </Box>
                 </Toolbar>
             </AppBar>
-            {/* {renderMobileMenu}
-            {renderMenu} */}
         </Box>
     );
 }

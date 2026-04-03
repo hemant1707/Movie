@@ -6,11 +6,8 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import { useDispatch } from 'react-redux';
-import { toggleFav } from '../slice/MovieSlice';
 
 export default function MovieCard(params) {
-    const dispatch = useDispatch();
     return (
         <Card sx={{ width: '100%', pt: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
             <Typography>{params.movie.title}</Typography>
@@ -22,7 +19,7 @@ export default function MovieCard(params) {
                 <IconButton
                     aria-label="add to favorites"
                     onClick={() => {
-                        dispatch(toggleFav(params.movie.title));
+                        params.toggleFavorite();
                     }}
                 >
                     <FavoriteIcon color={params.movie.isfav ? 'error' : 'disabled'} />

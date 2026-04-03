@@ -55,7 +55,7 @@ const MovieLIst = ({ rowData }) => {
                 columnDefs={columnDefs}
                 defaultColDef={defaultColDef}
                 pagination={true}
-                paginationPageSize={10}
+                paginationPageSize={20}
             />
         </Box>
     );
