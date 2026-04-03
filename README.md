@@ -1,5 +1,3 @@
-🔹 Title
-
 Movie Explorer – React Movie Listing App
 
 🔹 Features
